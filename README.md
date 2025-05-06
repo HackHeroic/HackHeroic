@@ -1,8 +1,6 @@
 <h1 align="center">Hi 👋, I'm Murali Madhav C</h1>
 <h3 align="center">A passionate Software developer from India</h3>
 
-<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=hackheroic" alt="hackheroic" /></a> </p>
-
 - 🔭 I’m currently working on **United For Good(Charitable Organization:)**
 
 - 🌱 I’m currently learning **AI and Competitive Programming**
@@ -21,3 +19,5 @@
 <p><img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=hackheroic&show_icons=true&locale=en&layout=compact" alt="hackheroic" /></p>
 
 <p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=hackheroic&show_icons=true&locale=en" alt="hackheroic" /></p>
+
+<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=hackheroic" alt="hackheroic" /></a> </p>
