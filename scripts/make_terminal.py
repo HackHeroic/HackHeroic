@@ -4,7 +4,7 @@ Pure SVG + CSS animations (no script, no external fonts), so it renders inside
 GitHub's image sandbox. Every animated element's *base* style is its final state:
 if animations are off (reduced motion, static renderers) the full session shows.
 
-Usage: python3 make_terminal.py out.svg
+Usage: python3 scripts/make_terminal.py assets/terminal-vN.svg  (bump N on every change: GitHub caches images by path)
 """
 import sys
 from html import escape

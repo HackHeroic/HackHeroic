@@ -1,5 +1,5 @@
 <a href="https://muralimadhav.com">
-  <img src="./assets/terminal.svg" width="100%" alt="Terminal. whoami: C. Murali Madhav. i build for systems that break expensively. cat highlights.txt: 112x, cuda kernels vs single-core numpy. 2.50%, my grid forecast error; the grid's own: 3.51%. #8, hackmit puzzle contest, worldwide; was 17th. cat startup.json: name null, c_corp in process, clients FL and NY. git commit -m 'name the startup': nothing to commit, working tree clean.">
+  <img src="./assets/terminal-v2.svg" width="100%" alt="Terminal. whoami: C. Murali Madhav. i build for systems that break expensively. cat highlights.txt: 112x, cuda kernels vs single-core numpy. 2.50%, my grid forecast error; the grid's own: 3.51%. #8, hackmit puzzle contest, worldwide; was 17th. cat startup.json: name null, c_corp in process, clients FL and NY. git commit -m 'name the startup': nothing to commit, working tree clean.">
 </a>
 
 final-year cs & ai at newton school of technology. previously sde intern at transient ai (new york) and one of the first three engineers at [zuvees](https://zuvees.ae) (dubai). first author at ieee appeec 2026.
