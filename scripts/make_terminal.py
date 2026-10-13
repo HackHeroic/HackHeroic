@@ -43,10 +43,13 @@ SESSION = [
     ("cmd", "cat startup.json"),
     ("out", [('{', "dim"), ('"name"', "blue"), (': ', "dim"), ('null', "orange"), (', ', "dim"), ('"c_corp"', "blue"), (': ', "dim"), ('"in process"', "green"), (',', "dim")], {}),
     ("out", [(' ', "dim"), ('"clients"', "blue"), (': [', "dim"), ('"FL"', "green"), (', ', "dim"), ('"NY"', "green"), (']}', "dim")], {}),
+    ("cmd", 'git commit -m "name the startup"'),
+    ("pause", 0.5),
+    ("out", [("nothing to commit, working tree clean", "dim")], {}),
     ("end",),
 ]
 
-TYPE_DT = 0.075     # seconds per typed character
+TYPE_DT = 0.06     # seconds per typed character
 ENTER_PAUSE = 0.30  # after a command is typed, before its output
 OUT_GAP = 0.13      # between output lines
 START = 0.35
