@@ -9,13 +9,13 @@ Usage: python3 scripts/make_terminal.py assets/terminal-vN.svg  (bump N on every
 import sys
 from html import escape
 
-W = 760                     # viewBox width
-PAD = 30                    # left/right text padding
-FS = 20                     # body font size
+W = 560                     # viewBox width (README shows it at 600px; ~10px text on a 308px phone column)
+PAD = 24                    # left/right text padding
+FS = 19                     # body font size
 CW = FS * 0.6               # monospace advance width (approx)
-LH = 30                     # line height
-TITLE_H = 40
-TOP = TITLE_H + 34          # baseline of first line
+LH = 28                     # line height
+TITLE_H = 36
+TOP = TITLE_H + 32          # baseline of first line
 
 BG = "#161b22"
 BAR = "#21262d"
@@ -24,8 +24,8 @@ C = {
     "fg": "#e6edf3", "dim": "#8b949e", "green": "#3fb950", "blue": "#58a6ff",
     "purple": "#d2a8ff", "orange": "#ffa657", "red": "#ff7b72", "yellow": "#e3b341",
 }
-MONO = ("ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, "
-        "'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', monospace")
+MONO = ("ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, "
+        "'Liberation Mono', monospace")  # no Courier New: Android maps it to a typewriter face
 
 PROMPT = [("~", "blue"), (" $ ", "green")]
 PROMPT_LEN = sum(len(t) for t, _ in PROMPT)
@@ -34,12 +34,12 @@ PROMPT_LEN = sum(len(t) for t, _ in PROMPT)
 # appears instantly; ("pause", seconds) adds a beat; ("end",) is the idle prompt.
 SESSION = [
     ("cmd", "whoami"),
-    ("out", [("C. Murali Madhav", "fg")], {"size": 36, "bold": True, "lh": 46}),
+    ("out", [("C. Murali Madhav", "fg")], {"size": 30, "bold": True, "lh": 40}),
     ("out", [("i build for systems that break expensively.", "dim")], {}),
     ("cmd", "cat highlights.txt"),
     ("out", [("112x   ", "green", True), ("cuda kernels vs single-core numpy", "fg")], {}),
-    ("out", [("2.50%  ", "orange", True), ("my grid forecast error. the grid's own: 3.51%", "fg")], {}),
-    ("out", [("#8     ", "purple", True), ("hackmit puzzle contest, worldwide. was 17th.", "fg")], {}),
+    ("out", [("2.50%  ", "orange", True), ("my forecast error. grid's own: 3.51%", "fg")], {}),
+    ("out", [("#8     ", "purple", True), ("hackmit puzzle, worldwide. was 17th.", "fg")], {}),
     ("cmd", "cat startup.json"),
     ("out", [('{', "dim"), ('"name"', "blue"), (': ', "dim"), ('null', "orange"), (', ', "dim"), ('"c_corp"', "blue"), (': ', "dim"), ('"in process"', "green"), (',', "dim")], {}),
     ("out", [(' ', "dim"), ('"clients"', "blue"), (': [', "dim"), ('"FL"', "green"), (', ', "dim"), ('"NY"', "green"), (']}', "dim")], {}),
@@ -53,6 +53,11 @@ TYPE_DT = 0.06     # seconds per typed character
 ENTER_PAUSE = 0.30  # after a command is typed, before its output
 OUT_GAP = 0.13      # between output lines
 START = 0.35
+
+
+def fit(segs, size):
+    n = sum(len(seg[0]) for seg in segs)
+    return f' textLength="{n * size * 0.6:.1f}" lengthAdjust="spacing"'
 
 
 def tspan(segs, size=FS, bold=False):
@@ -84,11 +89,12 @@ def build():
         if kind in ("cmd", "end"):
             text = item[1] if kind == "cmd" else ""
             x_cmd = PAD + PROMPT_LEN * CW
-            line = [f'<text x="{PAD}" y="{y}" font-size="{FS}">{tspan(PROMPT)}'
+            fitattr = fit(PROMPT + [(text, "fg")], FS) if text else ""
+            line = [f'<text x="{PAD}" y="{y}" font-size="{FS}"{fitattr}>{tspan(PROMPT)}'
                     f'<tspan fill="{C["fg"]}">{escape(text)}</tspan></text>']
             if kind == "cmd":
                 n_type += 1
-                dist = len(text) * CW
+                dist = len(text) * CW + 2
                 dur = len(text) * TYPE_DT
                 t_type = t + 0.25           # tiny hesitation before typing
                 t_enter = t_type + dur + ENTER_PAUSE
@@ -110,7 +116,7 @@ def build():
                 y += LH
             else:
                 x_cur = PAD + PROMPT_LEN * CW
-                css.append(f".cur{{animation:blink 1.1s step-end {t:.2f}s infinite}}")
+                css.append(f".cur{{animation:blink 1.1s step-end {t:.2f}s 5}}")
                 line.append(f'<rect class="cur" x="{x_cur:.1f}" y="{y - FS + 3}" '
                             f'width="{CW:.1f}" height="{FS + 3}" fill="{C["fg"]}"/>')
                 body.append(f'<g class="s" style="animation-delay:{t:.2f}s">{"".join(line)}</g>')
@@ -121,7 +127,7 @@ def build():
             lh = opts.get("lh", LH)
             y_line = y + (lh - LH)            # taller lines push the baseline down
             body.append(f'<text class="s" style="animation-delay:{t:.2f}s" x="{PAD}" '
-                        f'y="{y_line}" font-size="{size}">{tspan(segs, size, opts.get("bold", False))}</text>')
+                        f'y="{y_line}" font-size="{size}"{fit(segs, size)}>{tspan(segs, size, opts.get("bold", False))}</text>')
             t += OUT_GAP
             y = y_line + LH
     H = y + 6
@@ -143,8 +149,8 @@ def build():
 <rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="12" fill="{BG}"/>
 <g clip-path="url(#card)">
 <rect x="0" y="0" width="{W}" height="{TITLE_H}" fill="{BAR}"/>
-<circle cx="24" cy="{TITLE_H / 2}" r="6.5" fill="#ff5f57"/><circle cx="46" cy="{TITLE_H / 2}" r="6.5" fill="#febc2e"/><circle cx="68" cy="{TITLE_H / 2}" r="6.5" fill="#28c840"/>
-<text x="{W / 2}" y="{TITLE_H / 2 + 5}" font-size="14" fill="{C["dim"]}" text-anchor="middle">madhav@hackheroic: ~</text>
+<circle cx="20" cy="{TITLE_H / 2}" r="6" fill="#ff5f57"/><circle cx="40" cy="{TITLE_H / 2}" r="6" fill="#febc2e"/><circle cx="60" cy="{TITLE_H / 2}" r="6" fill="#28c840"/>
+<text x="{W / 2}" y="{TITLE_H / 2 + 5}" font-size="13" fill="{C["dim"]}" text-anchor="middle">madhav@hackheroic: ~</text>
 {chr(10).join(body)}
 </g>
 <rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="12" fill="none" stroke="{BORDER}" stroke-width="1.5"/>
